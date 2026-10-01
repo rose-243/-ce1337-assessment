@@ -27,7 +27,7 @@ let questionInfo =[
 
     },
     {
-        question: "was founded in what decade ",
+        question: "was founded in what year ",
         answers:  [1776, 1707, 2011, 1523,1960]
 
     }
@@ -72,8 +72,9 @@ function levelEasy()
     else
     {
         //display answers here + running total FIX LATER 
-        console.log("Thank you for playing");
-        console.log("You got " + level1points + "/5 correct answers")
+         console.log("You got " + level1points + "/5 correct answers")
+        console.log("Thank you for playing "+name+" :)");
+       
         process.exit(1);
     }
 }
@@ -113,8 +114,12 @@ function levelMedium()
     else
     {
         //display answers here + running total FIX LATER 
-        console.log("Thank you for playing");
+console.log("=====SCORE SUMMARY=====")
+        console.log("You got "+level1points+ "/5 correct answers on level Easy")
+    console.log("You got "+level2points+"/5 correct answers level on Medium")
         console.log("You got " +(level1points+level2points) + "/10 correct answers")
+        console.log("Thank you for playing "+name+" :)");
+      
         process.exit(1);
     }
 }
@@ -155,8 +160,13 @@ let capital =["Nairobi","Ankara","Ottawa","Mogadishu","Nassau"]
     else
     {
         //display answers here + running total FIX LATER 
-        console.log("Thank you for playing");
-        console.log("You got " +(level1points+level2points+level3points) + "/15 correct answers")
+console.log("=====SCORE SUMMARY=====")
+        console.log("You got "+level1points+ "/5 correct answers on level Easy")
+    console.log("You got "+level2points+"/5 correct answers level on Medium")
+console.log("You got "+level3points+ "/5 correct answers level on Hard")
+          console.log("You got " +(level1points+level2points+level3points) + "/15 correct answers")
+        console.log("Thank you for playing"+name+" :)" );
+      
         process.exit(1);
     }
 }
@@ -170,7 +180,7 @@ function levelExtreme()
     
     console.log ("\n  =====Level Extreme===== \n");
    console.log("This level is Extremely Hard\n");
-console.log("In this last round you must input the decade in which the country was founded \n");
+console.log("In this last round you must enter the in which the country was founded. \nAnswers within 5 years would be accepted.");
     prompt.question("If you're ready, press enter to continue the quiz!\n");
 
 let founded =["United States Of America ","United Kingdom ","South Sudan ","Sweden ","Cote d'Ivoire "]
@@ -179,12 +189,16 @@ let founded =["United States Of America ","United Kingdom ","South Sudan ","Swed
   for (let i = 0; i < founded.length; i++)
     {
         let extremeQuestions = prompt.question(founded[i] +  questionInfo[3].question + ":" + "\n");  
+        extremeQuestions = Number (extremeQuestions);
 while (isNaN(extremeQuestions))
-console. log("make sure its a number")
+
+{console. log("make sure its a number");
 extremeQuestions - prompt.question(founded[i] + " " + questionInfo[3].question + ": \n");
-extremeQuestions = Number (extremeQuestions)
-if
+extremeQuestions = Number (extremeQuestions);
+}if
 (Math. abs(extremeQuestions - questionInfo[3] .answers[i]) <= 5)
+
+
         {
             level4points ++;
         }
