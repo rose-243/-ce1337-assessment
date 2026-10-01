@@ -1,5 +1,4 @@
 const prompt = require("readline-sync");
-/*  */ 
 
 console.log("Guess the Country quiz!\n");
 
@@ -7,9 +6,8 @@ let name = prompt.question("Please enter your name: \n");
 
 console.log("Welcome " + name + " to the Guess the Country quiz!\n");
 console.log("There are 4 stages in this quiz, each stage has 5 questions. You will be scored at the end of each stage.\nYou can choose to quit after each stage.\n");
-console.log("The first stage is the easiest, and the last stage is the hardest. Good luck!\n");
+console.log("Press enter to skip a question. You will not be able to return to the question again.\n");
 prompt.question("Press enter to start the quiz!\n");
-
 
 //sorts the questions + the answers
 let questionInfo =[
@@ -18,13 +16,12 @@ let questionInfo =[
         answers: ["Malta","Colombia" ,"Cambodia","Australia","France"],
     },
     {
-        question: "In what country would you find",
+        question: "What country would you find",
         answers: ["Japan", "South Africa", "Greece", "Spain", "Mexico"],
     },
     {
-        question: " is the capital city of what country?",
-        answers: ["Kenya", "Turkey", "Canada", "Somalia", "Bahamas"],
-
+        question: "is the capital city of what country?",
+        answers: ["Kenya","Turkey","Canada","Somalia","The Bahamas"],
     },
     {
         question: "was founded in what year?",
@@ -33,175 +30,240 @@ let questionInfo =[
     }
 ]
 
-totalPoints = 0;
-           
-//the first level of the quiz
+let level1points = 0;
+let level2points = 0;
+let level3points = 0;
+let level4points = 0;
+
+//the first level of the quiz 
 function levelEasy ()
 {
-    level1points = 0;
+   
+    let totalPoints = 0;
 
     console.log("=====Level Easy===== \n");
     console.log("The country names are scrambled, You have to guess the correct country name.\n");
     
     let scramble =["amlta","mbicolao","admibaoc","rauiaatsl","ncrfea"]
 
-    for (i = 0; i < scramble.length; i++)
+    //looping through the easy questions 
+    for (let i = 0; i < scramble.length; i++)
     {
         let easyQuestions = prompt.question(questionInfo[0].question + ": " +scramble[i] + "\n");  
 
-        if (easyQuestions === questionInfo[0].answers[i])
+        //keeps track of level 1 correct answers
+        //keeps running total for the quiz overall
+        //converts both to lower case so no matter the caps its correct
+        if (easyQuestions.toLowerCase() === questionInfo[0].answers[i].toLowerCase())
         {
             level1points ++;
+            totalPoints ++;
         }
             
     }
 
-    console.log("\n" + "Congratulations on finishing level Easy\n");
+    console.log("Congratulations on finishing level Easy\n");
+   
+    let nextRound = prompt.question("Would you like continue to the next round? (yes or no)\n");
 
-    nextRound = prompt.question("Would you like continue to the next round? (yes or no)\n");
-
-    if (nextRound == "yes" || nextRound == "Yes")
+    //input validation to make sure user enters yes or no
+      while (nextRound.toLowerCase() !== "yes"  && nextRound.toLowerCase() !== "no")
     {
-        return level1points;
+        nextRound = prompt.question ("Please enter yes or no!\n");
     }
 
-    else
-    {
-        //display answers here + running total FIX LATER 
-        console.log("Thank you for playing, " + name);
+    //allowing any yes to be accepted no matter the caps 
+    switch (nextRound.toLowerCase()){
+        case "yes": 
+        prompt.question("Press enter to move on to the next round\n");
+        return totalPoints;
+        
+    //if no stops program from continuing to run
+    default: 
+        console.log("===SUMMARY===")
         console.log("You got " +level1points+ "/5 correct answers")
+        console.log("Thank you for playing " +name+ " :D");
         process.exit(1);
+        break;
     }
+
+
 }
 
-levelEasy();
-
-console.log("\nLevel 2 start\n");
-
-prompt.question("Press enter to begin Level 2\n")
-
-
-//The second level of the quiz
-levelMedium()
-
-function levelMedium ()
+//level medium 
+function levelMedium(totalPoints)
 {
-    level2points = 0;
+   
+    let landMarks = ["Mount Fuji","Table Mountain","Acropolis","Sagrada Familia","Chichen Itza"]
 
-    console.log("===Level Medium===\n");
-    console.log("In which country would you find these famous landmarks?\n");
-    
-    let landmark = ["Mount Fuji", "Table Mountain", "Acropolis", "Sagrada Familia", "Chichen Itza"]
-    
-    for(i = 0; i < landmark.length; i++)
-{
-    let mediumQuestions = prompt.question(questionInfo[1].question + ": " + landmark[i] + "\n");
-    
-    if (mediumQuestions === questionInfo[1].answers[i])
+    console.log("=====Level Medium===== \n");
+
+    for (let i = 0; i < landMarks.length; i++)
+    {
+        let mediumQuestions = prompt.question(questionInfo[1].question + ": " +landMarks[i] + "?\n");  
+
+        if (mediumQuestions.toLowerCase() === questionInfo[1].answers[i].toLowerCase())
         {
             level2points ++;
+            totalPoints ++;
         }
-}
-
-console.log("\n" + "Congratulations on finishing level Medium\n");
-
-    nextRound = prompt.question("Would you like continue to the next round? (yes or no)\n");
-
-    if (nextRound == "yes" || nextRound == "Yes")
-    {
-        return level2points;
     }
 
-    else
+    console.log("Congratulations on finishing level Medium\n");
+
+    let nextRound = prompt.question("Would you like continue to the next round? (yes or no)\n");
+
+      while (nextRound.toLowerCase() !== "yes"  && nextRound.toLowerCase() !== "no")
     {
-        console.log("Thank you for playing, " + name);
-        console.log("You got " +(level1points+level2points)+ "/10 correct answers")
+        nextRound = prompt.question ("Please enter yes or no!\n");
+    }
+
+    switch (nextRound.toLowerCase()){
+        case "yes": 
+        prompt.question("Press enter to move on to the next round\n");
+        return totalPoints;
+        
+    //displays the level total 
+    //displays total of levels played 
+    default: 
+        console.log("===SUMMARY===")
+        console.log ("You got " +level1points+ "/5 correct answers for level easy")
+        console.log ("You got " +level2points+ "/5 correct answers for level medium")
+        console.log("For a total of " +totalPoints+ "/10 correct answers");
+        console.log("Thank you for playing " +name+ " :D");
+        
         process.exit(1);
+        break;
     }
+
 }
 
-
-//The third level of the quiz
-levelHard()
-
-function levelHard()
+//hard level
+function levelHard(totalPoints)
 {
-    level3points = 0;
 
-    console.log("\n===Level Hard===\n");
-    console.log("Guess the country based on its capital city\n");
+    let cities = ["Nairobi","Ankara","Ottawa","Mogadishu","Nassau"]
 
-    let capital = ["Nairobi","Ankara","Ottawa","Mogadishu","Nassau"]
+    console.log("=====Level Hard===== \n");
 
-    for(i = 0; i < capital.length; i++)
-{
-    let hardQuestions = prompt.question(capital[i] + questionInfo[2].question + "\n");
-
-    if(hardQuestions === questionInfo[2].answers[i])
+    for (let i = 0; i < cities.length; i++)
     {
-        level3points++;
-    }
-}
-console.log("\n" + "Congratulations on finishing level Hard\n");
+        let hardQuestions = prompt.question( cities[i] + " " + questionInfo[2].question + ": \n");  
 
-    nextRound = prompt.question("Would you like continue to the next round? (yes or no)\n");
-
-    if (nextRound == "yes" || nextRound == "Yes")
-    {
-        return level3points;
+        if (hardQuestions.toLowerCase()=== questionInfo[2].answers[i].toLowerCase())
+        {
+            level3points ++;
+            totalPoints ++;
+        }
+            
     }
 
-    else
-    { 
-        console.log("Thank you for playing, " + name);
-        console.log("You got " +(level1points+level2points+level3points)+ "/15 correct answers")
+    console.log("Congratulations on finishing level Hard\n");
+
+    let nextRound = prompt.question("Would you like continue to the next round? (yes or no)\n");
+
+    while (nextRound.toLowerCase() !== "yes"  && nextRound.toLowerCase() !== "no")
+    {
+        nextRound = prompt.question ("Please enter yes or no!\n");
+    }
+
+    switch (nextRound.toLowerCase()){
+        case "yes": 
+        prompt.question("Press enter to move on to the next round\n");
+        return totalPoints;
+        
+
+    default: 
+        console.log("===SUMMARY===")
+        console.log ("You got " +level1points+ "/5 correct answers for level easy")
+        console.log ("You got " +level2points+ "/5 correct answers for level medium")
+        console.log ("You got " +level3points+ "/5 correct answers for level hard")
+        console.log("For a total of " +totalPoints+ "/15 correct answers");
+        console.log("Thank you for playing " +name+ " :D");
         process.exit(1);
+        break;
     }
+
 }
 
-//The fourth level of the quiz
-levelExtreme()
-
-function levelExtreme()
+//level extreme
+function levelExtreme (totalPoints)
 {
-    level4points = 0;
 
-    console.log("\n===Level Extreme===\n");
-    console.log("You must answer which year these countries were founded\nThere is a 10 year leeway on your answer\n");
+    let countries = ["America","United Kingdom","South Sudan","Sweden","Cote d'Ivoire"]
 
-    let year = ["America ", "United Kingdom ", "South Sudan ", "Sweden ", "Cote d' ivoire "]
+    console.log("=====Extreme===== \n");
+    console.log("You must enter which year the country was founded\nAnswers within 5 years either way will be accepted");
     
-    extremeQuestions = Number (extremeQuestions);
 
-    for(i = 0; i < year.length; i++)
-{
-    let extremeQuestions = prompt.question(year[i] + questionInfo[3].question + "\n");
-
-    if(extremeQuestions === questionInfo[3].answers[i])
+    for (let i = 0; i < countries.length; i++)
     {
-        level4points++;
+        let extremeQuestions = prompt.question(countries[i] + " " + questionInfo[3].question + ": \n"); 
+        
+        //input validation to ensure the user enters a number
+        while (isNaN(extremeQuestions))
+        {
+            console.log("make sure its a number");
+            extremeQuestions = prompt.question( countries[i] + " " + questionInfo[3].question + ": \n"); 
+
+        }
+
+        extremeQuestions = Number(extremeQuestions) 
+        //allows the user 5 years either way
+        //maths absolute to turn all the numbers positive
+        if (Math.abs(extremeQuestions - questionInfo[3].answers[i]) <= 5)
+        {
+            level4points ++;
+            totalPoints++;
+        }  
     }
-}
-console.log("\n" + "Congratulations on finishing level Extreme\n");
 
-        console.log("Thank you for playing, " + name);
-        console.log("You got " +(level1points+level2points+level3points+level4points)+ "/20 correct answers\n")
-        console.log("You have successfully completed the quiz! Well done for making it this far")
+    return totalPoints; 
+    
 }
 
-//Calculating the overall total
-overallTotal()
-
-let sumOfPoints = (level1points+level2points+level3points+level4points);
-
-function overallTotal()
+//displays the quiz and overall total
+function displayAnswer()
 {
-    console.log("\n=====SCORE SUMMARY=====");
-    console.log("Your Level 1 total is: " + level1points + "/5");
-    console.log("Your Level 2 total is: " + level2points + "/5");
-    console.log("Your Level 3 total is: " + level3points + "/5");
-    console.log("Your Level 4 total is: " + level4points + "/5");
-    console.log("Your quiz total is: " + sumOfPoints + "/20");
 
-    process.exit(1);
+    let score = 0;
+
+    //passes score into function
+    score = levelEasy(score)
+    score = levelMedium(score)
+    score = levelHard(score)
+    score = levelExtreme(score)
+
+    console.log("===SUMMARY===");
+    console.log("Level Easy: " +level1points+ "/5");
+    console.log("Level Medium: " +level2points+ "/5");
+    console.log("Level Hard: " +level3points+ "/5");
+    console.log("Level Extreme: " +level4points+ "/5");
+    console.log("Total Points: " +score+ "/20");
+
+    //response depending on how well the user did 
+    if (score >= 14)
+    {
+        console.log("Congrats you did amazing!");
+    }
+
+    else if (score >=12 && score < 14)
+    {
+        console.log("Well done, you did well!")
+    }
+
+    else if (score >= 10 && score < 12)
+    {
+        console.log("You did okay?")
+    }
+
+    else
+    {
+        console.log("You suck!!")
+    }
+
+    console.log("Thank you for playing " +name+ " :D");
+
 }
+
+displayAnswer();
